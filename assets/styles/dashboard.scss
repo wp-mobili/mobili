@@ -1,0 +1,269 @@
+.wp-core-ui {
+  .button-error {
+    background: #b12233;
+    border-color: #78101c;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+
+    &:focus, .focus {
+      background: #a71b2b;
+      border-color: #6c0b16;
+      color: #fff;
+      box-shadow: 0 0 0 1px #fff, 0 0 0 3px #b12233;
+    }
+
+    &:hover, &.hover {
+      background: #d4293e;
+      border-color: #871321;
+      color: #fff;
+    }
+
+    &:active, &.active {
+      background: #a71b2b;
+      border-color: #6c0b16;
+      box-shadow: none;
+      color: #fff;
+    }
+
+    &:disabled, &.disabled {
+      color: #a7aaad !important;
+      background: #f6f7f7 !important;
+      border-color: #dcdcde !important;
+      box-shadow: none !important;
+      text-shadow: none !important;
+      cursor: default;
+    }
+  }
+}
+
+.mi-panel-outer {
+  display: flex;
+  flex-wrap: wrap;
+
+  .half-panel {
+    min-width: 50%;
+    max-width: 50%;
+    padding: 0 15px;
+    box-sizing: border-box;
+  }
+}
+
+.mi-iphone-mockup {
+  margin: 30px auto;
+  position: relative;
+  width: 300px;
+  max-width: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  pointer-events: none;
+
+
+  svg{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .height-fill{
+    padding-top: 184%;
+  }
+
+  .mockup-inner {
+    position: absolute;
+    top: 7%;
+    bottom: 2%;
+    left: 2%;
+    right: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 3;
+  }
+
+  .app-icon {
+    width: 70px;
+    height: 70px;
+    background: #eee;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    box-shadow: rgb(0, 0, 0, .1) 0 4px 13px;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .app-title {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+    animation: none;
+  }
+
+  .app-desc {
+    font-size: 13px;
+    color: #888;
+  }
+}
+
+.mi-media-input{
+  display: flex;
+}
+
+@keyframes changeAnimation {
+  50%{
+    transform: scale(1.1,1.1);
+    color: orange;
+    opacity: .8;
+  }
+}
+
+.content-changed{
+  animation: changeAnimation .5s !important;
+}
+
+.mi-show-more-options{
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 10px 0;
+  color: #555;
+  border-bottom: #555 2px solid;
+  font-weight: bold;
+  margin-bottom: 20px;
+
+  &:hover{
+    color: #222;
+    border-bottom-color: #222;
+  }
+}
+
+@media (max-width: 769px) {
+  .hide-in-tablet{
+    display: none !important;
+  }
+  .w100-in-tablet{
+    min-width: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex: 1 !important;
+  }
+}
+
+@media (max-width: 481px) {
+  .hide-in-mobile{
+    display: none !important;
+  }
+  .w100-in-mobile{
+    min-width: 100% !important;
+    max-width: 100% !important;
+    width: 100% !important;
+    flex: 1 !important;
+  }
+}
+
+.mobili-store-wrap {
+  .theme-install-overlay {
+    .wp-full-overlay-main {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-mockup {
+      position: relative;
+      width: 360px;
+      max-width: 100%;
+      border-radius: 50px;
+      border: #000 5px solid;
+      overflow: hidden;
+      background-color: #eee;
+
+      .height-fill{
+        padding-top: 190%;
+      }
+
+      &::before {
+        content: '';
+        display: block;
+        width: 50%;
+        height: 30px;
+        background: #000;
+        margin: 0 auto 10px auto;
+        border-radius: 0 0 20px 20px;
+      }
+      iframe {
+        height: calc(100% - 40px);
+        position: absolute;
+        top: 40px;
+        left: 0;
+      }
+      &::after {
+        content: '';
+        display: block;
+        width: 40%;
+        height: 4px;
+        background: rgba(0,0,0,.3);
+        border-radius: 10px;
+        position: absolute;
+        z-index: 99;
+        bottom: 3px;
+        left: 30%;
+      }
+    }
+
+    @media (max-height: 750px){
+      .phone-mockup {
+        width: 320px;
+      }
+    }
+
+    @media (max-height: 670px) , (max-width: 700px){
+      .phone-mockup {
+        width: 100%;
+        height: 100%;
+        border: none;
+        overflow: auto;
+        background-color: transparent;
+        border-radius: 0 !important;
+
+        &:before,&:after{
+          display: none;
+        }
+        .height-fill{
+          display: none;
+        }
+        iframe{
+          position: static;
+          height: 100%;
+        }
+      }
+    }
+
+  }
+}
+.loading-more{
+  .spinner{
+    visibility: visible;
+    margin: auto;
+    float: none;
+    display: block;
+  }
+}
+
+
+.edit-php {
+  .status-mobili ~ .inline-edit-row .inline-edit-status {
+    display: none !important;
+  }
+  .post_status_page[value="all"] ~ table tr.status-mobili{
+    display: none !important;
+  }
+}

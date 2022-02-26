@@ -1,0 +1,16 @@
+{
+    "name": "wp-mobili/mobili",
+    "description": "the website mobile version builder",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Mobili\\": "includes/classes"
+        }
+    },
+    "minimum-stability": "beta",
+    "require": {
+      "ext-json": "*",
+      "ext-fileinfo": "*",
+        "ext-exif": "*"
+    }
+}

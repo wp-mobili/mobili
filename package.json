@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "watch-dash-styles": "sass --watch assets/styles/dashboard.scss assets/styles/dashboard.css",
+    "prod-dash-styles": "sass --no-source-map assets/styles/dashboard.scss assets/styles/dashboard.css",
+    "watch-front": "sass --watch assets/styles/frontend.scss assets/styles/frontend.css",
+    "prod-front": "sass --no-source-map assets/styles/frontend.scss assets/styles/frontend.css"
+  }
+}

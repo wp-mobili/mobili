@@ -1,0 +1,24 @@
+.mobili-pwa-installer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 0 6px;
+  transition: 0.2s;
+}
+.mobili-pwa-installer.hidden {
+  transform: translateY(100%);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.mobili-pwa-installer .install-text {
+  flex: 1;
+  margin-right: 15px;
+}
+
+/*# sourceMappingURL=frontend.css.map */

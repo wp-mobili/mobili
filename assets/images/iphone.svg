@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 700">
+    <defs>
+        <style>.cls-1{fill:#fff;stroke:#000;stroke-miterlimit:10;stroke-width:6px;}.cls-2{fill:#666;}</style>
+    </defs>
+    <title>iphone</title>
+    <g>
+        <g>
+            <rect class="cls-1" x="3" y="3" width="374" height="694" rx="54.87"/>
+            <path d="M121,3.5H259a0,0,0,0,1,0,0v13a25,25,0,0,1-25,25H146a25,25,0,0,1-25-25V3.5A0,0,0,0,1,121,3.5Z"/>
+            <rect class="cls-2" x="133.5" y="683.5" width="113" height="5" rx="2.5"/>
+        </g>
+    </g>
+</svg>
