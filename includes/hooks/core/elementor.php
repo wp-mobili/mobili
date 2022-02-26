@@ -1,5 +1,7 @@
 <?php
 
+use Mobili\Adaptations\Elementor\Elementor;
+
 function mi_hook_elementor_create_template_dialog()
 { ?>
     <p id="elementor-new-template__form__mobili__wrapper">
@@ -8,3 +10,4 @@ function mi_hook_elementor_create_template_dialog()
 <?php }
 
 add_action('elementor/template-library/create_new_dialog_fields', 'mi_hook_elementor_create_template_dialog');
+add_action('elementor/theme/register_conditions', [Elementor::class,'register_conditions']);

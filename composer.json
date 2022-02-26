@@ -11,6 +11,7 @@
     "require": {
       "ext-json": "*",
       "ext-fileinfo": "*",
-        "ext-exif": "*"
+        "ext-exif": "*",
+        "mobiledetect/mobiledetectlib": "^2.8"
     }
 }
