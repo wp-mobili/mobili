@@ -17,9 +17,11 @@ function mi_hook_setup_theme()
 {
     $activeTemplateSlug = Manager::getActiveTemplateSlug();
     $templateGlobals = WP_CONTENT_DIR . '/themes/' . $activeTemplateSlug . '/mobili.php';
+    add_filter('mobili_can_load_assets','__return_true');
     if (!empty($activeTemplateSlug) && file_exists($templateGlobals)) {
         require_once $templateGlobals;
     }
+    remove_filter('mobili_can_load_assets','__return_true');
 }
 
 function mi_hook_pre_option_stylesheet($false, $option, $default)
