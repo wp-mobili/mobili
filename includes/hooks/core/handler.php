@@ -62,6 +62,6 @@ function mi_hook_themes_screen()
 
 
 add_filter('template', 'mi_hook_get_template', 10, 1);
-add_action('setup_theme', 'mi_hook_setup_theme');
+add_action('after_setup_theme', 'mi_hook_setup_theme');
 add_filter('pre_option_stylesheet', 'mi_hook_pre_option_stylesheet', 1, 3);
 add_action('current_screen', 'mi_hook_themes_screen');
