@@ -2,10 +2,10 @@
 /**
  * Plugin Name: Mobili
  * Description: The Website Mobile Version Builder.
- * Plugin URI: https://test.org/plugins/mobili/
- * Author: test.com
+ * Plugin URI: https://wp-mobili.com/
+ * Author: The Mobili Team
  * Version: 1.0.0
- * Author URI: https://test.com/
+ * Author URI: https://wp-mobili.com/
  * Text Domain: mobili
  */
 
