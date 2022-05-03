@@ -1,8 +1,8 @@
 <?php
 /**
- * Plugin Name: WP Mobili
+ * Plugin Name: Mobili
  * Description: The Website Mobile Version Builder.
- * Plugin URI: https://wordpress.org/plugins/wp-mobili/
+ * Plugin URI: https://wordpress.org/plugins/mobili/
  * Author: The Mobili Team
  * Version: 1.0.0
  * Author URI: https://wp-mobili.com/
