@@ -3,6 +3,8 @@
 
 namespace Mobili\PWA;
 
+use Exception;
+
 /**
  * Class Setup
  *
@@ -27,7 +29,7 @@ class Setup
 
     public static function installBox()
     {
-        if (!mi_can_load_assets() || !mi_pwa_is_active()) {
+        if ((!mi_can_load_assets() && !mi_pwa_desktop_is_active()) || !mi_pwa_is_active()) {
             return;
         }
         mi_get_template_part('install.php');
@@ -35,7 +37,7 @@ class Setup
 
     public static function manifestLoader()
     {
-        if (!mi_can_load_assets() || !mi_pwa_is_active()) {
+        if ((!mi_can_load_assets() && !mi_pwa_desktop_is_active()) || !mi_pwa_is_active()) {
             return;
         }
         echo '<link rel="manifest" href="' . site_url('/manifest.json') . '">' . PHP_EOL;
@@ -69,11 +71,15 @@ class Setup
                 continue;
             }
 
-            $manifest['icons'][] = [
-                'src' => $iconUrl,
-                'type' => image_type_to_mime_type(exif_imagetype($iconUrl)),
-                'sizes' => $size . 'x' . $size
-            ];
+            $iconType = preg_replace("#\?.*#", "", pathinfo($iconUrl, PATHINFO_EXTENSION));
+
+            if (in_array($iconType,['png','jpg','svg','gif'])) {
+                $manifest['icons'][] = [
+                    'src' => $iconUrl,
+                    'type' => 'image/'.$iconType,
+                    'sizes' => $size . 'x' . $size
+                ];
+            }
         }
 
         $content = json_encode($manifest);

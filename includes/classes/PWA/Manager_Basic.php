@@ -22,12 +22,18 @@ class Manager_Basic {
 			'mobili_pwa_basic_section', __('Basic details', 'mobili'), null, $this->menuSlug
 		);
 
-		add_settings_field(
-			'pwa-general-Status-field', __('PWA Status', 'mobili'), [Settings::class, 'checkbox'], $this->menuSlug,
-			'mobili_pwa_basic_section', [
-				'name' => 'mobili-pwa_status'
-			]
-		);
+        add_settings_field(
+            'pwa-general-Status-field', __('PWA Status', 'mobili'), [Settings::class, 'checkbox'], $this->menuSlug,
+            'mobili_pwa_basic_section', [
+                'name' => 'mobili-pwa_status'
+            ]
+        );
+        add_settings_field(
+            'pwa-general-desktop-field', __('Show in desktop', 'mobili'), [Settings::class, 'checkbox'], $this->menuSlug,
+            'mobili_pwa_basic_section', [
+                'name' => 'mobili-pwa_desktop'
+            ]
+        );
 
 		add_settings_field(
 			'pwa-general-shortname-field', __('Short name', 'mobili'), [Settings::class, 'input'], $this->menuSlug,
@@ -53,6 +59,7 @@ class Manager_Basic {
 		);
 
 		register_setting('mobili_pwa', 'mobili-pwa_status');
+		register_setting('mobili_pwa', 'mobili-pwa_desktop');
 		register_setting('mobili_pwa', 'mobili-pwa_shortname');
 		register_setting('mobili_pwa', 'mobili-pwa_name');
 		register_setting('mobili_pwa', 'mobili-pwa_description');

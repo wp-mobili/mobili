@@ -38,10 +38,13 @@ class Mobile_Mode
 
     public static function adminNotices()
     {
-        if (!self::getStatus()){
+        if (!self::getStatus()) {
             return;
         }
-        printf( '<div class="notice notice-warning mobili-mobile-mode-notice"><p><b>%s</b><br>%s</p></div>', __('Mobile mode is active!','mobili'),__('Please disable this option from the top bar when you are done.','mobili'));
+        echo Log_Manager::printAdminMessage([
+            'title' => __('Mobile mode is active!', 'mobili'),
+            'content' => __('Please disable this option from the top bar when you are done.', 'mobili')
+        ],false,'warning');
     }
 
     public static function getStatus(): bool
@@ -64,8 +67,8 @@ class Mobile_Mode
         ]);
         $admin_bar->add_menu([
             'id' => 'mobili-about_mobile_version',
-            'title' => __('What is the mobile mode?','mobili'),
-            'href' => 'https://wp-mobili.com/what-is-mobile-mode-in-wp-mobili-plugin/?utm_source=wordpress&utm_campaign=plugin',
+            'title' => __('What is the mobile mode?', 'mobili'),
+            'href' => 'https://wp-mobili.com/article/mobile-mode-in-admin-panel/?utm_source=wordpress&utm_campaign=plugin',
             'parent' => 'mobili-enable_mobile_version'
         ]);
     }

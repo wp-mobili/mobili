@@ -14,6 +14,7 @@ function mobili_loaded () {
 	mi_set_option_default('mobili-pwa_color-background', '#ffffff');
 	mi_set_option_default('mobili-pwa_color-theme', '#fb951f');
 	mi_set_option_default('mobili-pwa_status', 'on');
+	mi_set_option_default('mobili-pwa_desktop', 'on');
 }
 
 add_action('plugins_loaded', 'mobili_loaded');

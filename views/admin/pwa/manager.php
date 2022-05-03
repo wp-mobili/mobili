@@ -8,7 +8,7 @@
     <h1><?php echo esc_html(get_admin_page_title()); ?>
         <br>
         <small><?php _e('Make your website an installable application!', 'mobili'); ?>
-            <a href="https://wp-mobili.com/what-is-pwa-in-wp-mobili-plugin/?utm_source=wordpress&utm_campaign=plugin" target="_blank"><?php _e('Need help?','mobili'); ?></a>
+            <a href="https://wp-mobili.com/article/meaning-and-use-cases-of-pwa/?utm_source=wordpress&utm_campaign=plugin" target="_blank"><?php _e('Need help?','mobili'); ?></a>
         </small>
     </h1>
     <br>
