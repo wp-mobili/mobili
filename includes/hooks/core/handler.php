@@ -17,11 +17,11 @@ function mi_hook_setup_theme()
 {
     $activeTemplateSlug = Manager::getActiveTemplateSlug();
     $templateGlobals = WP_CONTENT_DIR . '/themes/' . $activeTemplateSlug . '/mobili.php';
-    add_filter('mobili_can_load_assets','__return_true');
+    add_filter('mobili_can_load_assets', '__return_true');
     if (!empty($activeTemplateSlug) && file_exists($templateGlobals)) {
         require_once $templateGlobals;
     }
-    remove_filter('mobili_can_load_assets','__return_true');
+    remove_filter('mobili_can_load_assets', '__return_true');
 }
 
 function mi_hook_pre_option_stylesheet($false, $option, $default)
@@ -55,7 +55,11 @@ function mi_hook_themes_screen()
     if (is_admin()) {
         $currentScreen = get_current_screen();
         if (isset($currentScreen->id) && 'themes' === $currentScreen->id) {
+            // Exclude mobile themes from themes.php page.
             add_filter('wp_prepare_themes_for_js', 'mi_hook_wp_prepare_themes_for_js');
+
+            // Fix current desktop active theme badge.
+            add_filter('mobili_can_load_assets', '__return_false');
         }
     }
 }

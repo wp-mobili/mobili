@@ -17,4 +17,5 @@ add_action('admin_menu', [PWA_Manager::class, 'registerAdminMenu']);
 add_action('admin_init', [PWA_Manager::class, 'adminInit']);
 add_action('admin_menu', [Mobile_Mode::class, 'registerAdminMenu']);
 add_action('admin_bar_menu', [Mobile_Mode::class,'adminBar']);
-add_action('mobili_can_load_assets', [Mobile_Mode::class,'canLoadAssets']);
+add_filter('mobili_can_load_assets', [Mobile_Mode::class,'canLoadAssets']);
+add_action('admin_notices', [Mobile_Mode::class,'adminNotices']);

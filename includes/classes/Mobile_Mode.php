@@ -36,6 +36,14 @@ class Mobile_Mode
         mi_redirect($_SERVER['HTTP_REFERER'] ?? admin_url());
     }
 
+    public static function adminNotices()
+    {
+        if (!self::getStatus()){
+            return;
+        }
+        printf( '<div class="notice notice-warning mobili-mobile-mode-notice"><p><b>%s</b><br>%s</p></div>', __('Mobile mode is active!','mobili'),__('Please disable this option from the top bar when you are done.','mobili'));
+    }
+
     public static function getStatus(): bool
     {
         return isset($_SESSION['mobili_mobile_mode']) && $_SESSION['mobili_mobile_mode'];
