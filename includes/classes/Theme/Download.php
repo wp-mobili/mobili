@@ -34,7 +34,7 @@ class Download
     {
         $init = new self();
         add_submenu_page(
-            null, __('Download Mobile Themes', 'wp-mobili'), __('Download Mobile Themes', 'wp-mobili'), 'manage_options',
+            null, __('Download Mobile Themes', 'wp-mobili'), __('Download Mobile Themes', 'wp-mobili'), 'install_themes',
             self::$menuSlug, [
                 $init,
                 'adminMenuContent'
@@ -44,10 +44,10 @@ class Download
 
     public function adminMenuContent()
     {
-        if (!current_user_can('install_themes') || !isset($_REQUEST['_wpnonce'], $_REQUEST['theme']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'mobile_theme_download')) {
+        if (!current_user_can('install_themes') || !isset($_REQUEST['_wpnonce'], $_REQUEST['theme']) || !wp_verify_nonce(esc_sql($_REQUEST['_wpnonce']), 'mobile_theme_download')) {
             wp_die( __( 'Sorry, you are not allowed to install themes on this site.' ) );
         }
-        $theme  = isset( $_REQUEST['theme'] ) ? urldecode( $_REQUEST['theme'] ) : '';
+        $theme  = isset( $_REQUEST['theme'] ) ? urldecode( esc_sql($_REQUEST['theme']) ) : '';
 
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php'; // For themes_api().
 

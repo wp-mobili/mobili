@@ -40,8 +40,8 @@ class Setup
         if ((!mi_can_load_assets() && !mi_pwa_desktop_is_active()) || !mi_pwa_is_active()) {
             return;
         }
-        echo '<link rel="manifest" href="' . site_url('/manifest.json') . '">' . PHP_EOL;
-        echo '<meta name="theme-color" content="' . get_option('mobili-pwa_color-theme') . '">';
+        echo '<link rel="manifest" href="' . esc_attr(site_url('/manifest.json')) . '">' . PHP_EOL;
+        echo '<meta name="theme-color" content="' . esc_attr(get_option('mobili-pwa_color-theme')) . '">';
     }
 
     public function manifest()

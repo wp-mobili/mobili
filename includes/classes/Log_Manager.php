@@ -31,13 +31,13 @@ class Log_Manager {
 		$output = sprintf('<div class="notice %s">', implode(' ', $classes));
 		if ( is_array($content) ) {
 			if ( isset($content['title']) ) {
-				$output .= sprintf('<p><b>%s</b></p>', $content['title']);
+				$output .= sprintf('<p><b>%s</b></p>', esc_html($content['title']));
 			}
 			if ( isset($content['content']) ) {
-				$output .= sprintf('<p>%s</p>', $content['content']);
+				$output .= sprintf('<p>%s</p>', esc_html($content['content']));
 			}
 		} else if ( is_string($content) ) {
-			$output .= sprintf('<p>%s</p>', $content);
+			$output .= sprintf('<p>%s</p>', esc_html($content));
 		}
 		$output .= '</div>';
 

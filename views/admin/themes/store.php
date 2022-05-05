@@ -23,7 +23,7 @@
 	); ?>
     <div class="wp-filter hide-if-no-js">
         <div class="filter-count">
-            <span class="count theme-count">Loading</span>
+            <span class="count theme-count"><?php _e('Loading','mobili'); ?></span>
         </div>
         <ul class="filter-links">
             <li>
@@ -51,13 +51,13 @@
 
         <form class="search-form">
             <label class="screen-reader-text" for="wp-filter-search-input">
-				<?php _e('Search Themes'); ?>
+				<?php _e('Search Mobile Themes','mobili'); ?>
             </label>
             <input type="hidden" name="page" value="install-mobile-theme">
             <input type="hidden" name="sort" value="<?php echo $sort; ?>">
             <input placeholder="<?php _e(
 				'Search themes...'
-			); ?>" type="search" name="search" value="<?php echo $_GET['search'] ?? ''; ?>" id="wp-filter-search-input" class="wp-filter-search">
+			); ?>" type="search" name="search" value="<?php esc_attr_e($_GET['search'] ?? ''); ?>" id="wp-filter-search-input" class="wp-filter-search">
         </form>
     </div>
     <h2 class="screen-reader-text hide-if-no-js"><?php _e('Mobile themes list', 'mobili'); ?></h2>

@@ -2,7 +2,6 @@
 
 function mi_hook_admin_enqueue_styles () {
 	wp_enqueue_style('mi-style-mobili-dashboard', MOBILI_URL . 'assets/styles/dashboard.css');
-	wp_enqueue_style('mi-style-mobili-icons', MOBILI_URL . 'assets/fonts/mobili-icons/style.css');
 }
 
 function mi_hook_admin_enqueue_scripts () {

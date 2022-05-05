@@ -14,11 +14,11 @@ $themes = mi_prepare_themes_for_js($templates);
 ?>
 <?php do_action('mobili_admin_themes_before_page'); ?>
 <div class="wrap">
-    <h1 class="wp-heading-inline"><?= __('Mobile Themes', 'mobili') ?>
-        <span class="title-count theme-count"><?= count($templates); ?></span>
+    <h1 class="wp-heading-inline"><?php _e('Mobile Themes', 'mobili') ?>
+        <span class="title-count theme-count"><?php echo count($templates); ?></span>
     </h1>
 
-    <a href="<?= $installUrl ?>" class="hide-if-no-js page-title-action"><?= __('Add New', 'mobili') ?></a>
+    <a href="<?php esc_attr_e($installUrl); ?>" class="hide-if-no-js page-title-action"><?php _e('Add New', 'mobili'); ?></a>
 
     <hr class="wp-header-end">
     <?php do_action('mobili_admin_themes_before_content'); ?>
@@ -38,10 +38,10 @@ $themes = mi_prepare_themes_for_js($templates);
                         $active_class = ' active';
                     }
                     ?>
-                    <div class="theme<?php echo $active_class; ?>" data-slug="<?php echo $theme['id']; ?>">
+                    <div class="theme<?php echo $active_class; ?>" data-slug="<?php esc_attr_e($theme['id']); ?>">
                         <?php if (!empty($theme['screenshot'][0])) { ?>
                             <div class="theme-screenshot">
-                                <img src="<?php echo esc_attr($theme['screenshot'][0]); ?>" alt=""/>
+                                <img src="<?php esc_attr_e($theme['screenshot'][0]); ?>" alt="<?php esc_attr_e($theme['id']); ?>"/>
                             </div>
                         <?php } else { ?>
                             <div class="theme-screenshot blank"></div>
@@ -53,7 +53,7 @@ $themes = mi_prepare_themes_for_js($templates);
                                     <p>
                                         <?php _e('New version available.'); ?>
                                         <a class="button-link"
-                                           href="<?php echo Update::getUpdateThemeAdminUrl($theme['id']); ?>"><?php _e('Update now'); ?></a>
+                                           href="<?php esc_attr_e(Update::getUpdateThemeAdminUrl($theme['id'])); ?>"><?php _e('Update now'); ?></a>
                                     </p>
                                 </div>
                             <?php else : ?>
@@ -91,7 +91,7 @@ $themes = mi_prepare_themes_for_js($templates);
                                             printf(
                                             /* translators: %s: Theme name. */
                                                 __('There is a new version of %s available, but it doesn&#8217;t work with your version of WordPress.'),
-                                                $theme['name']
+                                                esc_html($theme['name'])
                                             );
                                             if (current_user_can('update_core')) {
                                                 printf(
@@ -104,7 +104,7 @@ $themes = mi_prepare_themes_for_js($templates);
                                             printf(
                                             /* translators: %s: Theme name. */
                                                 __('There is a new version of %s available, but it doesn&#8217;t work with your version of PHP.'),
-                                                $theme['name']
+                                                esc_html($theme['name'])
                                             );
                                             if (current_user_can('update_php')) {
                                                 printf(
@@ -188,11 +188,11 @@ $themes = mi_prepare_themes_for_js($templates);
                         <div class="theme-id-container">
                             <?php if ($theme['active']) { ?>
                                 <h2 class="theme-name" id="<?php echo esc_attr($aria_name); ?>">
-                                    <span><?php _ex('Active:', 'theme'); ?></span> <?php echo $theme['name']; ?>
+                                    <span><?php _ex('Active:', 'theme'); ?></span> <?php echo esc_html($theme['name']); ?>
                                 </h2>
                             <?php } else { ?>
                                 <h2 class="theme-name"
-                                    id="<?php echo esc_attr($aria_name); ?>"><?php echo $theme['name']; ?></h2>
+                                    id="<?php echo esc_attr($aria_name); ?>"><?php echo esc_html($theme['name']); ?></h2>
                             <?php } ?>
 
                             <div class="theme-actions">
@@ -204,14 +204,14 @@ $themes = mi_prepare_themes_for_js($templates);
                                         ?>
                                         <a aria-label="<?php echo esc_attr($customize_aria_label); ?>"
                                            class="button button-primary customize load-customize hide-if-no-customize"
-                                           href="<?php echo $theme['actions']['customize']; ?>"><?php _e('Customize'); ?></a>
+                                           href="<?php echo esc_attr($theme['actions']['customize']); ?>"><?php _e('Customize'); ?></a>
                                     <?php } ?>
                                 <?php } elseif ($theme['compatibleWP'] && $theme['compatiblePHP']) { ?>
                                     <?php
                                     /* translators: %s: Theme name. */
                                     $aria_label = sprintf(_x('Activate %s', 'theme'), '{{ data.name }}');
                                     ?>
-                                    <a class="button activate" href="<?php echo $theme['actions']['activate']; ?>"
+                                    <a class="button activate" href="<?php echo esc_attr($theme['actions']['activate']); ?>"
                                        aria-label="<?php echo esc_attr($aria_label); ?>"><?php _e('Activate'); ?></a>
                                     <?php
                                     if (!$theme['blockTheme'] && current_user_can('edit_theme_options') && current_user_can('customize')) {
@@ -220,7 +220,7 @@ $themes = mi_prepare_themes_for_js($templates);
                                         ?>
                                         <a aria-label="<?php echo esc_attr($live_preview_aria_label); ?>"
                                            class="button button-primary load-customize hide-if-no-customize"
-                                           href="<?php echo $theme['actions']['customize']; ?>"><?php _e('Live Preview'); ?></a>
+                                           href="<?php echo esc_attr( $theme['actions']['customize']); ?>"><?php _e('Live Preview'); ?></a>
                                     <?php } ?>
                                 <?php } else { ?>
                                     <?php
@@ -238,12 +238,12 @@ $themes = mi_prepare_themes_for_js($templates);
                         </div>
                     </div>
                 <?php endforeach; ?>
-                <div class="theme add-new-theme"><a href="<?= $installUrl ?>">
+                <div class="theme add-new-theme"><a href="<?php esc_attr_e($installUrl); ?>">
                         <div class="theme-screenshot"><span></span></div>
                         <h2 class="theme-name"><?php _e('Add New Theme', 'mobili'); ?></h2></a></div>
             </div>
         </div>
-        <div class="theme-overlay" tabindex="0" role="dialog" aria-label="<?php _e('Theme Details'); ?>"></div>
+        <div class="theme-overlay" tabindex="0" role="dialog" aria-label="<?php echo esc_attr(__('Theme Details')); ?>"></div>
     <?php } ?>
     <?php do_action('mobili_admin_themes_after_content'); ?>
 </div>

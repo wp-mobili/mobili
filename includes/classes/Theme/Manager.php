@@ -174,7 +174,7 @@ class Manager
             $menuTitle .= sprintf(' <span class="update-plugins">%s</span>', count($updates));
         }
         $submenu = add_submenu_page(
-            'themes.php', __('Mobile Themes', 'wp-mobili'), $menuTitle, 'manage_options',
+            'themes.php', __('Mobile Themes', 'wp-mobili'), $menuTitle, 'install_themes',
             self::$menuSlug, [
             $init,
             'adminMenuContent'
@@ -196,7 +196,10 @@ class Manager
      */
     public function adminMenuContent()
     {
-        $action = $_GET['action'] ?? '';
+        if (!current_user_can('install_themes')){
+            wp_die(__('Sorry, you are not allowed to manage themes on this site.'));
+        }
+        $action = esc_sql($_GET['action'] ?? '');
         if ($action === 'activate') {
             $this->adminMenuThemeActivator();
             mi_redirect(admin_url('themes.php?page=mobile-themes'));
@@ -274,7 +277,7 @@ class Manager
     public function adminMenuThemeActivator()
     {
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
-                $_GET['_nonce'], 'mobile_theme'
+                esc_sql($_GET['_nonce']), 'mobile_theme'
             )) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The operation failed, please try again!', 'mobili'), false, 'error'
@@ -283,7 +286,7 @@ class Manager
             return;
         }
 
-        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->setCurrentTheme($_GET['slug'])) {
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->setCurrentTheme(esc_sql($_GET['slug']))) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The template could not be found!', 'mobili'), false, 'error'
             );
@@ -293,7 +296,7 @@ class Manager
     public function adminMenuThemeDelete()
     {
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
-                $_GET['_nonce'], 'mobile_theme'
+                esc_sql($_GET['_nonce']), 'mobile_theme'
             )) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The operation failed, please try again!', 'mobili'), false, 'error'
@@ -302,7 +305,7 @@ class Manager
             return;
         }
 
-        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->deleteTheme($_GET['slug'])) {
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->deleteTheme(esc_sql($_GET['slug']))) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The template could not be deleted!', 'mobili'), false, 'error'
             );
@@ -312,7 +315,7 @@ class Manager
     public function adminMenuThemeDeactivate()
     {
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
-                $_GET['_nonce'], 'mobile_theme'
+                esc_sql($_GET['_nonce']), 'mobile_theme'
             ) || !$this->setActiveTemplate('')) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The operation failed, please try again!', 'mobili'), false, 'error'

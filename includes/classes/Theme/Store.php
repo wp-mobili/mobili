@@ -43,7 +43,7 @@ class Store
     {
         $self = new self();
         $request = $self->_request(self::apiUrl . 'updates/', [
-            'themes' => implode(',',$slugs)
+            'themes' => implode(',', $slugs)
         ]);
 
 
@@ -51,16 +51,16 @@ class Store
             return [];
         }
 
-        return json_decode($request['body'],true);
+        return json_decode($request['body'], true);
     }
 
     public static function getList()
     {
-        $sort = $_POST['sort'] ?? 'popular';
-        $search = $_POST['search'] ?? '';
+        $sort = esc_sql($_POST['sort'] ?? 'popular');
+        $search = esc_sql($_POST['search'] ?? '');
         $page = !isset($_POST['page']) || !is_numeric(
             $_POST['page']
-        ) || $_POST['page'] <= 0 ? 1 : (int)$_POST['page'];
+        ) || $_POST['page'] <= 0 ? 1 : (int)esc_sql($_POST['page']);
 
         $requestArgs = [
             'sort' => $sort,

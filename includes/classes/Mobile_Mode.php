@@ -32,6 +32,10 @@ class Mobile_Mode
 
     public function adminMenuContent()
     {
+        if (!current_user_can('manage_options')) {
+            mi_redirect($_SERVER['HTTP_REFERER'] ?? admin_url());
+            return;
+        }
         self::setStatus(!self::getStatus());
         mi_redirect($_SERVER['HTTP_REFERER'] ?? admin_url());
     }
@@ -44,7 +48,7 @@ class Mobile_Mode
         echo Log_Manager::printAdminMessage([
             'title' => __('Mobile mode is active!', 'mobili'),
             'content' => __('Please disable this option from the top bar when you are done.', 'mobili')
-        ],false,'warning');
+        ], false, 'warning');
     }
 
     public static function getStatus(): bool
@@ -57,15 +61,15 @@ class Mobile_Mode
         $_SESSION['mobili_mobile_mode'] = $status;
     }
 
-    public static function adminBar(WP_Admin_Bar $admin_bar)
+    public static function adminBar(WP_Admin_Bar $adminBar)
     {
-        $admin_bar->add_menu([
+        $adminBar->add_menu([
             'id' => 'mobili-enable_mobile_version',
             'title' => self::getStatus() ? __('Disable mobile mode', 'mobili') : __('Enable mobile mode', 'mobili'),
             'href' => self::getAdminUrl(),
             'parent' => 'top-secondary'
         ]);
-        $admin_bar->add_menu([
+        $adminBar->add_menu([
             'id' => 'mobili-about_mobile_version',
             'title' => __('What is the mobile mode?', 'mobili'),
             'href' => 'https://wp-mobili.com/article/mobile-mode-in-admin-panel/?utm_source=wordpress&utm_campaign=plugin',

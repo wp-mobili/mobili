@@ -19,7 +19,7 @@ class Upload
     {
         $init = new self();
         add_submenu_page(
-            null, __('Upload Mobile Themes', 'wp-mobili'), __('Upload Mobile Themes', 'wp-mobili'), 'manage_options',
+            null, __('Upload Mobile Themes', 'wp-mobili'), __('Upload Mobile Themes', 'wp-mobili'), 'upload_themes',
             self::$menuSlug, [
                 $init,
                 'adminMenuContent'
@@ -29,8 +29,8 @@ class Upload
 
     public function adminMenuContent()
     {
-        if (!current_user_can('upload_themes') || !isset($_FILES['themezip'], $_POST['_wpnonce']) || !wp_verify_nonce($_POST['_wpnonce'], 'mobile_theme_upload')) {
-            wp_die(__('Sorry, you are not allowed to update themes on this site.','mobili'));
+        if (!current_user_can('upload_themes') || !isset($_FILES['themezip'], $_POST['_wpnonce']) || !wp_verify_nonce(esc_sql($_POST['_wpnonce']), 'mobile_theme_upload')) {
+            wp_die(__('Sorry, you are not allowed to upload theme on this site.','mobili'));
         }
 
 

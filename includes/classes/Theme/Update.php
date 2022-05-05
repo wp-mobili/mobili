@@ -94,11 +94,11 @@ class Update
 
     public function adminMenuContent()
     {
-        if (!current_user_can('update_themes') || !isset($_REQUEST['_wpnonce'], $_REQUEST['theme']) || !wp_verify_nonce($_REQUEST['_wpnonce'], 'mobile_theme_update')) {
-            wp_die(__('Sorry, you are not allowed to install themes on this site.'));
+        if (!current_user_can('update_themes') || !isset($_REQUEST['_wpnonce'], $_REQUEST['theme']) || !wp_verify_nonce(esc_sql($_REQUEST['_wpnonce']), 'mobile_theme_update')) {
+            wp_die(__('Sorry, you are not allowed to update themes on this site.'));
         }
 
-        $theme = isset($_REQUEST['theme']) ? urldecode($_REQUEST['theme']) : '';
+        $theme = isset($_REQUEST['theme']) ? urldecode(esc_sql($_REQUEST['theme'])) : '';
 
         require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
@@ -125,7 +125,7 @@ class Update
     {
         if (isset($update_actions['themes_page'])) {
             $update_actions['themes_page'] = sprintf(
-                '<a href="%s" target="_parent">%s</a>', Manager::getAdminUrl(), __('Go to Mobile Themes page', 'mobili')
+                '<a href="%s" target="_parent">%s</a>', esc_attr(Manager::getAdminUrl()), __('Go to Mobile Themes page', 'mobili')
             );
         }
 

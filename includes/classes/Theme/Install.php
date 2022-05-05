@@ -14,7 +14,7 @@ class Install {
 	public static function registerAdminMenu () {
 		$init    = new self();
 		$submenu = add_submenu_page(
-			null, __('Mobile Themes', 'wp-mobili'), __('Mobile Themes', 'wp-mobili'), 'manage_options', self::$menuSlug,
+			null, __('Mobile Themes', 'wp-mobili'), __('Mobile Themes', 'wp-mobili'), 'install_themes', self::$menuSlug,
 			[
 				$init,
 				'adminMenuContent'
@@ -35,9 +35,12 @@ class Install {
 	}
 
 	public function adminMenuContent () {
+        if (!current_user_can('install_themes')){
+            wp_die(__('Sorry, you are not allowed to install themes on this site.'));
+        }
 		mi_get_core_view(
 			'admin/themes/store.php', [
-			'sort'    => isset($_GET['sort']) && in_array($_GET['sort'],['popular','latest','favorites']) ? $_GET['sort'] : 'popular',
+			'sort'    => isset($_GET['sort']) && in_array(esc_sql($_GET['sort']),['popular','latest','favorites']) ? esc_sql($_GET['sort']) : 'popular',
 			'store_url'    => self::getAdminUrl(),
 			'nonce'        => wp_create_nonce('mobile_theme_install'),
 			'upload_nonce' => wp_create_nonce('mobile_theme_upload'),

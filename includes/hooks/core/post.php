@@ -46,11 +46,11 @@ function mi_hook_create_post_mobile_version()
         wp_die('No post to duplicate has been provided!');
     }
 
-    if (!isset($_GET['mobili_nonce']) || !wp_verify_nonce($_GET['mobili_nonce'], basename(__FILE__))) {
+    if (!isset($_GET['mobili_nonce']) || !wp_verify_nonce(esc_sql($_GET['mobili_nonce']), basename(__FILE__))) {
         return;
     }
 
-    $postID = absint($_GET['post']);
+    $postID = absint(esc_sql($_GET['post']));
     $post = get_post($postID);
     $currentUser = wp_get_current_user();
     $newPostAuthor = $currentUser->ID;
