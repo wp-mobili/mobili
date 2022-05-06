@@ -199,7 +199,7 @@ class Manager
         if (!current_user_can('install_themes')){
             wp_die(__('Sorry, you are not allowed to manage themes on this site.'));
         }
-        $action = esc_sql($_GET['action'] ?? '');
+        $action = sanitize_key($_GET['action'] ?? '');
         if ($action === 'activate') {
             $this->adminMenuThemeActivator();
             mi_redirect(admin_url('themes.php?page=mobile-themes'));
@@ -286,7 +286,7 @@ class Manager
             return;
         }
 
-        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->setCurrentTheme(esc_sql($_GET['slug']))) {
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->setCurrentTheme(sanitize_key($_GET['slug']))) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The template could not be found!', 'mobili'), false, 'error'
             );
@@ -305,7 +305,7 @@ class Manager
             return;
         }
 
-        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->deleteTheme(esc_sql($_GET['slug']))) {
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->deleteTheme(sanitize_key($_GET['slug']))) {
             $this->messages[] = Log_Manager::printAdminMessage(
                 __('The template could not be deleted!', 'mobili'), false, 'error'
             );

@@ -40,7 +40,7 @@ class Install {
         }
 		mi_get_core_view(
 			'admin/themes/store.php', [
-			'sort'    => isset($_GET['sort']) && in_array(esc_sql($_GET['sort']),['popular','latest','favorites']) ? esc_sql($_GET['sort']) : 'popular',
+			'sort'    => isset($_GET['sort']) && in_array(sanitize_key($_GET['sort']),['popular','latest','favorites']) ? sanitize_key($_GET['sort']) : 'popular',
 			'store_url'    => self::getAdminUrl(),
 			'nonce'        => wp_create_nonce('mobile_theme_install'),
 			'upload_nonce' => wp_create_nonce('mobile_theme_upload'),

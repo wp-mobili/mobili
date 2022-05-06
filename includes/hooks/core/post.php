@@ -50,7 +50,7 @@ function mi_hook_create_post_mobile_version()
         return;
     }
 
-    $postID = absint(esc_sql($_GET['post']));
+    $postID = absint(sanitize_key($_GET['post']));
     $post = get_post($postID);
     $currentUser = wp_get_current_user();
     $newPostAuthor = $currentUser->ID;

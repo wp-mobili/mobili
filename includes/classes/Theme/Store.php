@@ -56,11 +56,11 @@ class Store
 
     public static function getList()
     {
-        $sort = esc_sql($_POST['sort'] ?? 'popular');
-        $search = esc_sql($_POST['search'] ?? '');
+        $sort = sanitize_key($_POST['sort'] ?? 'popular');
+        $search = sanitize_text_field($_POST['search'] ?? '');
         $page = !isset($_POST['page']) || !is_numeric(
             $_POST['page']
-        ) || $_POST['page'] <= 0 ? 1 : (int)esc_sql($_POST['page']);
+        ) || $_POST['page'] <= 0 ? 1 : (int)sanitize_text_field($_POST['page']);
 
         $requestArgs = [
             'sort' => $sort,

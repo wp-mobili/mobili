@@ -47,7 +47,7 @@ class Download
         if (!current_user_can('install_themes') || !isset($_REQUEST['_wpnonce'], $_REQUEST['theme']) || !wp_verify_nonce(esc_sql($_REQUEST['_wpnonce']), 'mobile_theme_download')) {
             wp_die( __( 'Sorry, you are not allowed to install themes on this site.' ) );
         }
-        $theme  = isset( $_REQUEST['theme'] ) ? urldecode( esc_sql($_REQUEST['theme']) ) : '';
+        $theme  = isset( $_REQUEST['theme'] ) ? urldecode( sanitize_key($_REQUEST['theme']) ) : '';
 
         include_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php'; // For themes_api().
 

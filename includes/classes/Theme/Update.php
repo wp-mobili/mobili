@@ -98,7 +98,7 @@ class Update
             wp_die(__('Sorry, you are not allowed to update themes on this site.'));
         }
 
-        $theme = isset($_REQUEST['theme']) ? urldecode(esc_sql($_REQUEST['theme'])) : '';
+        $theme = isset($_REQUEST['theme']) ? urldecode(sanitize_key($_REQUEST['theme'])) : '';
 
         require_once ABSPATH . 'wp-admin/includes/class-wp-upgrader.php';
 
