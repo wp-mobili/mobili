@@ -257,7 +257,7 @@ class Manager
             if (Inline_Theme::isInlineTheme()) {
                 $currentDesktopTheme = wp_get_theme();
                 $this->messages[] = Log_Manager::printAdminMessage(
-                    sprintf(__('Your desktop mode theme (%s) supports WP Mobili plugin.', 'mobili'), $currentDesktopTheme->get('Name')), false, 'info'
+                    sprintf(__('Your desktop mode theme (%s) supports the Mobili plugin.', 'mobili'), $currentDesktopTheme->get('Name')), false, 'info'
                 );
             } else {
                 $this->messages[] = Log_Manager::printAdminMessage(

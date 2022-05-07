@@ -185,7 +185,7 @@ class Settings
 
         echo sprintf(
             '<div class="mi-media-input">%s<button class="button select-media" type="button">%s</button></div>',
-            esc_html($inputRender), esc_html($args['select'])
+            $inputRender, esc_html($args['select'])
         );
         if (!empty($args['desc'])) {
             echo sprintf('<p class="description">%s</p>', esc_html($args['desc']));
