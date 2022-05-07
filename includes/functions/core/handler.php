@@ -82,7 +82,7 @@ function mi_can_load_assets(): bool
 function mi_redirect($url)
 {
     @wp_redirect($url);
-    echo '<script>window.location.href = "' . $url . '";</script>';
+    echo '<script>window.location.href = "' . esc_attr($url) . '";</script>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
     exit();
 }
 

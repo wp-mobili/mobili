@@ -209,11 +209,11 @@
                 <# if ( !data.buy ) { #>
                 <a class="button button-primary theme-install" data-name="{{ data.name }}" data-slug="{{ data.id }}" href="{{ data.install_url }}" aria-label="<?php echo esc_attr(
 					$aria_label
-				); ?>"><?php _e('Install'); ?></a>
+				); ?>"><?php esc_html_e(__('Install')); ?></a>
                 <# } else { #>
                 <a class="button button-primary" target="_blank" href="{{ data.buy }}" aria-label="<?php echo esc_attr(
                     $aria_label
-                ); ?>"><?php _e('Buy'); ?></a>
+                ); ?>"><?php esc_html_e(__('Buy')); ?></a>
                 <# } #>
 
                 <button class="button preview install-theme-preview"><?php _e('Preview'); ?></button>
@@ -225,7 +225,7 @@
                 <a class="button button-primary disabled" data-name="{{ data.name }}" aria-label="<?php echo esc_attr(
 					$aria_label
 				); ?>"><?php _ex('Cannot Install', 'theme'); ?></a>
-                <button class="button disabled"><?php _e('Preview'); ?></button>
+                <button class="button disabled"><?php esc_html_e(__('Preview')); ?></button>
                 <# } #>
                 <# } #>
             </div>

@@ -270,7 +270,7 @@ class Manager
             return;
         }
         foreach ($this->messages as $message) {
-            echo $message;
+            echo $message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
         }
     }
 
