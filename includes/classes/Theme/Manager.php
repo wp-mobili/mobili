@@ -5,6 +5,7 @@ namespace Mobili\Theme;
 use Mobili\Inline_Theme;
 use Mobili\Log_Manager;
 use WP_Filesystem_Base;
+use WP_Theme;
 
 /**
  * Class Theme_Manager
@@ -80,6 +81,26 @@ class Manager
         );
     }
 
+    /**
+     * mobile theme convert url builder
+     *
+     * @param string $slug
+     * @param string $mode
+     * @return string
+     * @since 1.0.0
+     */
+    public static function getConvertThemeAdminUrl(string $slug, string $mode = 'mobile'): string
+    {
+        return add_query_arg(
+            [
+                '_nonce' => wp_create_nonce('mobile_theme'),
+                'action' => 'convert',
+                'slug' => $slug,
+                'convert' => $mode
+            ], self::getAdminUrl()
+        );
+    }
+
     public static function getActiveTemplateSlug()
     {
         $slug = get_option('mi_active_theme', '');
@@ -93,7 +114,7 @@ class Manager
     }
 
     /**
-     * @return false|\WP_Theme
+     * @return false|WP_Theme
      */
     public function getActiveTemplate()
     {
@@ -129,7 +150,7 @@ class Manager
 
     /**
      * @param string $slug
-     * @return \WP_Theme[]
+     * @return WP_Theme[]
      */
     public static function getTemplates(string $slug = ''): array
     {
@@ -147,6 +168,7 @@ class Manager
         }
 
         $templates = [];
+        $convertedThemes = mi_get_converted_themes();
 
         foreach ($directories as $directory) {
             $theme = wp_get_theme($directory);
@@ -154,9 +176,14 @@ class Manager
                 continue;
             }
             $customHeaders = get_file_data($theme->get_file_path('style.css'), ['Mobili'], 'theme');
-            if (!isset($customHeaders[0]) || empty($customHeaders[0])) {
+            if ((!isset($customHeaders[0]) || empty($customHeaders[0])) && !(isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'mobile' )) {
                 continue;
             }
+
+            if (isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'desktop' ){
+                continue;
+            }
+
             $theme->offsetSet('Mobili', true);
             $templates[] = $theme;
 
@@ -196,7 +223,7 @@ class Manager
      */
     public function adminMenuContent()
     {
-        if (!current_user_can('install_themes')){
+        if (!current_user_can('install_themes')) {
             wp_die(__('Sorry, you are not allowed to manage themes on this site.'));
         }
         $action = sanitize_key($_GET['action'] ?? '');
@@ -212,6 +239,15 @@ class Manager
             $this->adminMenuThemeDelete();
             mi_redirect(admin_url('themes.php?page=mobile-themes'));
         }
+        if ($action === 'convert') {
+            $this->adminMenuThemeConvert();
+            $convertTo = sanitize_key($_GET['convert'] ?? 'mobile');
+            if ($convertTo == 'mobile') {
+                mi_redirect(admin_url('themes.php?page=mobile-themes'));
+            } else {
+                mi_redirect(admin_url('themes.php'));
+            }
+        }
 
         $templates = self::getTemplates();
         $currentTemplate = $this->getActiveTemplate();
@@ -221,7 +257,7 @@ class Manager
             if (Inline_Theme::isInlineTheme()) {
                 $currentDesktopTheme = wp_get_theme();
                 $this->messages[] = Log_Manager::printAdminMessage(
-                    sprintf(__('Your desktop mode theme (%s) supports WP Mobili plugin.', 'mobili'),$currentDesktopTheme->get('Name')), false, 'info'
+                    sprintf(__('Your desktop mode theme (%s) supports WP Mobili plugin.', 'mobili'), $currentDesktopTheme->get('Name')), false, 'info'
                 );
             } else {
                 $this->messages[] = Log_Manager::printAdminMessage(
@@ -230,7 +266,7 @@ class Manager
             }
         }
 
-        if ($currentTemplate instanceof \WP_Theme && $currentTemplate->errors() !== false && !empty($currentTemplate->errors())) {
+        if ($currentTemplate instanceof WP_Theme && $currentTemplate->errors() !== false && !empty($currentTemplate->errors())) {
             foreach ($currentTemplate->errors()->get_error_messages() as $message) {
                 $this->messages[] = Log_Manager::printAdminMessage(
                     [
@@ -323,6 +359,26 @@ class Manager
         }
     }
 
+    public function adminMenuThemeConvert()
+    {
+        if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
+                esc_sql($_GET['_nonce']), 'mobile_theme'
+            )) {
+            $this->messages[] = Log_Manager::printAdminMessage(
+                __('The operation failed, please try again!', 'mobili'), false, 'error'
+            );
+
+            return;
+        }
+        $convertTo = sanitize_key($_GET['convert'] ?? 'mobile');
+
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->convertTheme(sanitize_key($_GET['slug']), $convertTo)) {
+            $this->messages[] = Log_Manager::printAdminMessage(
+                __('The template could not be converted!', 'mobili'), false, 'error'
+            );
+        }
+    }
+
     public function setCurrentTheme(string $slug): bool
     {
         if ($slug === self::getActiveTemplateSlug() || (self::isValidMobileTemplate($slug) && $this->setActiveTemplate(
@@ -341,6 +397,23 @@ class Manager
         WP_Filesystem();
 
         if (self::isValidMobileTemplate($slug) && file_exists(self::MOBILI_THEMES_DIR . '/' . $slug) && $wp_filesystem->rmdir(self::MOBILI_THEMES_DIR . '/' . $slug, true)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function convertTheme(string $slug, string $mode = 'mobile'): bool
+    {
+        $getOptions = mi_get_converted_themes(); // Get all converted themes.
+
+        if (!in_array($mode, ['mobile', 'desktop'])) {
+            $mode = 'mobile';
+        }
+
+        $getOptions[$slug] = $mode;
+
+        if (update_option('mobili-converted_themes', $getOptions)) {
             return true;
         }
 

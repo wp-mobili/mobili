@@ -67,7 +67,7 @@ class Update
 
         if (!empty($updates)) {
             foreach ($updates as $key => $update) {
-                if (version_compare($update['new_version'], $themesVersions[$update['theme']], '<=')) {
+                if (isset($themesVersions[$update['theme']]) && version_compare($update['new_version'], $themesVersions[$update['theme']], '<=')) {
                     unset($updates[$key]);
                 }
             }
@@ -76,7 +76,7 @@ class Update
         return $updates;
     }
 
-    public static function themeUpdates(): object
+    public static function themeUpdates()
     {
         $updates = self::checkThemesUpdate();
         $parsedUpdates = [];

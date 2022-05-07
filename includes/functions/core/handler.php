@@ -258,3 +258,28 @@ function mi_prepare_themes_for_js(array $themes = []): array
     unset($theme);
     return $themes;
 }
+
+/**
+ * get templates who converted by user
+ *
+ * @param string $mode
+ * @return array|false|mixed|void
+ */
+function mi_get_converted_themes(string $mode = 'all')
+{
+    $getOptions = get_option('mobili-converted_themes');
+    if (!is_array($getOptions)) {
+        $getOptions = [];
+    }
+    if ($mode !== 'all' && !empty($getOptions)) {
+        $parsedThemes = [];
+        foreach ($getOptions as $slug => $val) {
+            if ($val === $mode) {
+                $parsedThemes[] = $slug;
+            }
+        }
+        $getOptions = $parsedThemes;
+    }
+
+    return $getOptions;
+}

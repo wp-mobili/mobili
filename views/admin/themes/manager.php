@@ -38,7 +38,7 @@ $themes = mi_prepare_themes_for_js($templates);
                         $active_class = ' active';
                     }
                     ?>
-                    <div class="theme<?php esc_attr_e($active_class); ?>" data-slug="<?php esc_attr_e($theme['id']); ?>">
+                    <div class="theme mobile-theme<?php esc_attr_e($active_class); ?>" data-slug="<?php esc_attr_e($theme['id']); ?>">
                         <?php if (!empty($theme['screenshot'][0])) { ?>
                             <div class="theme-screenshot">
                                 <img src="<?php esc_attr_e($theme['screenshot'][0]); ?>" alt="<?php esc_attr_e($theme['id']); ?>"/>

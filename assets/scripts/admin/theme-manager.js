@@ -21,12 +21,26 @@
         });
 
         if (theme.length > 0) {
-            let themeItem  = wp.template('theme-single');
+            let themeItem = wp.template('theme-single');
             let themeModal = $('.theme-overlay');
-            themeModal.html('<div class="theme-overlay active">' + themeItem(theme[0]) + '</div>');
+
+            if (theme[0].active){
+                themeModal.addClass('active');
+            }else{
+                themeModal.removeClass('active');
+            }
+            themeModal.html(themeItem(theme[0]));
 
             $('body').addClass('modal-open');
         }
+    });
 
+    $(document).on('click', '.theme .more-details', function () {
+        let themeSlug = $(this).parents('.theme').attr('data-slug');
+        let switchLink = MobiliThemeMobileData.switchLink.replaceAll('%theme%', themeSlug);
+        let themeModalButtons = $('.theme-wrap .inactive-theme');
+        if (themeModalButtons.find('.button.convert').length === 0) {
+            themeModalButtons.append('<a href="' + switchLink + '" class="button convert has-confirm" data-message="' + MobiliThemeMobileData.switchConform + '">' + MobiliThemeMobileData.switchText + '</a>');
+        }
     });
 })(jQuery);
