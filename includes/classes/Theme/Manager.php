@@ -16,7 +16,6 @@ use WP_Theme;
 class Manager
 {
     const MOBILI_THEMES_DIR = WP_CONTENT_DIR . '/themes';
-    private $messages = [];
     static $menuSlug = 'mobile-themes';
 
     public static function getAdminUrl()
@@ -176,11 +175,11 @@ class Manager
                 continue;
             }
             $customHeaders = get_file_data($theme->get_file_path('style.css'), ['Mobili'], 'theme');
-            if ((!isset($customHeaders[0]) || empty($customHeaders[0])) && !(isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'mobile' )) {
+            if ((!isset($customHeaders[0]) || empty($customHeaders[0])) && !(isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'mobile')) {
                 continue;
             }
 
-            if (isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'desktop' ){
+            if (isset($convertedThemes[$theme->get_stylesheet()]) && $convertedThemes[$theme->get_stylesheet()] === 'desktop') {
                 continue;
             }
 
@@ -255,35 +254,41 @@ class Manager
 
         if ($currentTemplate === false) {
             if (Inline_Theme::isInlineTheme()) {
-                $currentDesktopTheme = wp_get_theme();
-                $this->messages[] = Log_Manager::printAdminMessage(
-                    sprintf(__('Your desktop mode theme (%s) supports the Mobili plugin.', 'mobili'), $currentDesktopTheme->get('Name')), false, 'info'
-                );
+                add_action('mobili_admin_themes_before_content', function () {
+                    $currentDesktopTheme = wp_get_theme();
+                    Log_Manager::printAdminMessage(
+                        sprintf(__('Your desktop mode theme (%s) supports the Mobili plugin.', 'mobili'), $currentDesktopTheme->get('Name')), false, 'info', true
+                    );
+                });
             } else {
-                $this->messages[] = Log_Manager::printAdminMessage(
-                    __('There is no active mobile theme!', 'mobili'), false, 'warning'
-                );
+                add_action('mobili_admin_themes_before_content', function () {
+                    Log_Manager::printAdminMessage(
+                        __('There is no active mobile theme!', 'mobili'), false, 'warning', true
+                    );
+                });
             }
         }
 
         if ($currentTemplate instanceof WP_Theme && $currentTemplate->errors() !== false && !empty($currentTemplate->errors())) {
             foreach ($currentTemplate->errors()->get_error_messages() as $message) {
-                $this->messages[] = Log_Manager::printAdminMessage(
-                    [
-                        'title' => __('Template error', 'mobili'),
-                        'content' => $message
-                    ], false, 'error'
-                );
+                add_action('mobili_admin_themes_before_content', function () use ($message) {
+                    Log_Manager::printAdminMessage(
+                        [
+                            'title' => __('Template error', 'mobili'),
+                            'content' => $message
+                        ], false, 'error', true
+                    );
+                });
             }
         }
 
         if (!empty($currentTemplateSlug) && !self::isValidMobileTemplate($currentTemplateSlug)) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('Activated template is not available!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('Activated template is not available!', 'mobili'), false, 'error', true
+                );
+            });
         }
-
-        add_action('mobili_admin_themes_before_content', [$this, 'adminMenuThemesMessages']);
 
         mi_get_core_view(
             'admin/themes/manager.php', [
@@ -295,37 +300,27 @@ class Manager
         );
     }
 
-    /**
-     * print admin messages
-     *
-     * @since 1.0.0
-     */
-    public function adminMenuThemesMessages()
-    {
-        if (empty($this->messages)) {
-            return;
-        }
-        foreach ($this->messages as $message) {
-            echo $message; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-        }
-    }
-
     public function adminMenuThemeActivator()
     {
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
                 esc_sql($_GET['_nonce']), 'mobile_theme'
             )) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The operation failed, please try again!', 'mobili'), false, 'error'
-            );
+
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The operation failed, please try again!', 'mobili'), false, 'error', true
+                );
+            });
 
             return;
         }
 
         if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->setCurrentTheme(sanitize_key($_GET['slug']))) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The template could not be found!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The template could not be found!', 'mobili'), false, 'error', true
+                );
+            });
         }
     }
 
@@ -334,17 +329,21 @@ class Manager
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
                 esc_sql($_GET['_nonce']), 'mobile_theme'
             )) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The operation failed, please try again!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The operation failed, please try again!', 'mobili'), false, 'error', true
+                );
+            });
 
             return;
         }
 
         if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->deleteTheme(sanitize_key($_GET['slug']))) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The template could not be deleted!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The template could not be deleted!', 'mobili'), false, 'error', true
+                );
+            });
         }
     }
 
@@ -353,9 +352,11 @@ class Manager
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
                 esc_sql($_GET['_nonce']), 'mobile_theme'
             ) || !$this->setActiveTemplate('')) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The operation failed, please try again!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The operation failed, please try again!', 'mobili'), false, 'error', true
+                );
+            });
         }
     }
 
@@ -364,18 +365,22 @@ class Manager
         if (isset($_GET['_nonce']) && is_string($_GET['_nonce']) && !wp_verify_nonce(
                 esc_sql($_GET['_nonce']), 'mobile_theme'
             )) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The operation failed, please try again!', 'mobili'), false, 'error'
-            );
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The operation failed, please try again!', 'mobili'), false, 'error', true
+                );
+            });
 
             return;
         }
         $convertTo = sanitize_key($_GET['convert'] ?? 'mobile');
 
-        if (!isset($_GET['slug']) || empty($_GET['slug']) || !$this->convertTheme(sanitize_key($_GET['slug']), $convertTo)) {
-            $this->messages[] = Log_Manager::printAdminMessage(
-                __('The template could not be converted!', 'mobili'), false, 'error'
-            );
+        if (!isset($_GET['slug']) || empty($_GET['slug']) || !self::convertTheme(sanitize_key($_GET['slug']), $convertTo)) {
+            add_action('mobili_admin_themes_before_content', function () {
+                Log_Manager::printAdminMessage(
+                    __('The template could not be converted!', 'mobili'), false, 'error', true
+                );
+            });
         }
     }
 
@@ -403,7 +408,7 @@ class Manager
         return false;
     }
 
-    public function convertTheme(string $slug, string $mode = 'mobile'): bool
+    public static function convertTheme(string $slug, string $mode = 'mobile'): bool
     {
         $getOptions = mi_get_converted_themes(); // Get all converted themes.
 

@@ -45,10 +45,10 @@ class Mobile_Mode
         if (!self::getStatus()) {
             return;
         }
-        echo Log_Manager::printAdminMessage([
+        Log_Manager::printAdminMessage([
             'title' => __('Mobile mode is active!', 'mobili'),
             'content' => __('Please disable this option from the top bar when you are done.', 'mobili')
-        ], false, 'warning');
+        ], false, 'warning',true);
     }
 
     public static function getStatus(): bool

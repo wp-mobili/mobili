@@ -34,7 +34,11 @@ function mi_page_related(string $url, string $required = ''): bool
     if (strpos($_SERVER['REQUEST_URI'], $url) !== false && isset($_REQUEST[$required])) {
         return true;
     }
-    $referer = parse_url($_SERVER['HTTP_REFERER'] ?? '');
+    $referer = $_SERVER['HTTP_REFERER'] ?? [];
+    if (empty($referer)){
+        return false;
+    }
+    $referer = parse_url($referer);
     $refererQueries = $referer['query'] ?? '';
     parse_str($refererQueries, $refererQueries);
 

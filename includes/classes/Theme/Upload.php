@@ -65,6 +65,7 @@ class Upload
 
     public function installThemeCompleteActions($install_actions, $api, $stylesheet, $theme_info)
     {
+        Manager::convertTheme($stylesheet);
         if (isset($install_actions['themes_page'])) {
             $install_actions['themes_page'] = sprintf(
                 '<a href="%s" target="_parent">%s</a>', Manager::getAdminUrl(), __('Go to Mobile Themes page', 'mobili')
