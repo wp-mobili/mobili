@@ -54,7 +54,7 @@
 				<?php _e('Search Mobile Themes','mobili'); ?>
             </label>
             <input type="hidden" name="page" value="install-mobile-theme">
-            <input type="hidden" name="sort" value="<?php echo $sort; ?>">
+            <input type="hidden" name="sort" value="<?php echo esc_attr($sort); ?>">
             <input placeholder="<?php _e(
 				'Search themes...'
 			); ?>" type="search" name="search" value="<?php esc_attr_e($_GET['search'] ?? ''); ?>" id="wp-filter-search-input" class="wp-filter-search">
@@ -371,7 +371,7 @@
         </div>
     </div>
     <div class="wp-full-overlay-main">
-        <div class="phone-mockup" style="background-color: <?php echo get_option('mobili-pwa_color-theme','#eee') ; ?>">
+        <div class="phone-mockup" style="background-color: <?php echo esc_attr(get_option('mobili-pwa_color-theme','#eee')); ?>">
             <div class="height-fill"></div>
             <iframe src="{{ data.preview_url }}" title="<?php esc_attr_e( 'Preview' ); ?>"></iframe>
         </div>

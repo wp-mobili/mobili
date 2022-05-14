@@ -104,10 +104,10 @@ class Store
         }
 
         foreach ($request['body']['themes'] as &$theme) {
-            $theme['install_url'] = Download::getInstallThemeAdminUrl($theme['slug']);
+            $theme['install_url'] = esc_attr(Download::getInstallThemeAdminUrl($theme['slug']));
 
             if (current_user_can('switch_themes')) {
-                $theme['activate_url'] = Manager::getActivateThemeAdminUrl($theme['slug']);
+                $theme['activate_url'] = esc_attr(Manager::getActivateThemeAdminUrl($theme['slug']));
             }
 
             if (!is_multisite() && current_user_can('edit_theme_options') && current_user_can('customize')) {
@@ -128,13 +128,21 @@ class Store
                 ]
             );
 
-            $theme['num_ratings'] = number_format_i18n($theme['num_ratings']);
+            $theme['num_ratings'] = esc_html(number_format_i18n($theme['num_ratings']));
             $theme['preview_url'] = set_url_scheme($theme['preview_url']);
             $theme['compatible_wp'] = is_wp_version_compatible($theme['requires']);
             $theme['compatible_php'] = is_php_version_compatible($theme['requires_php']);
             $theme['compatible_mi'] = is_mobili_version_compatible($theme['requires_mi'] ?? '');
             $theme['installed'] = Manager::isValidMobileTemplate($theme['slug']);
             $theme['active'] = !empty($theme['slug']) && Manager::getActiveTemplateSlug() === $theme['slug'];
+            $theme['author'] = esc_html($theme['author'] ?? '');
+            $theme['buy'] = esc_attr($theme['buy'] ?? '');
+            $theme['description'] = esc_html($theme['description'] ?? '');
+            $theme['homepage'] = esc_attr($theme['homepage'] ?? '');
+            $theme['name'] = esc_html($theme['name'] ?? '');
+            $theme['reviews_url'] = esc_attr($theme['reviews_url'] ?? '');
+            $theme['slug'] = esc_attr($theme['slug'] ?? '');
+            $theme['version'] = esc_attr($theme['version'] ?? '');
         }
         unset($theme);
         $response['status'] = true;
