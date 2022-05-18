@@ -16,10 +16,10 @@ class Log_Manager
      * @param array|string $content
      * @param bool $dismissible
      * @param string $type
-     *
-     * @return string
+     * @param bool $echo
+     * @return false|string
      */
-    public static function printAdminMessage($content, bool $dismissible = true, string $type = 'success', bool $echo = false): string
+    public static function printAdminMessage($content, bool $dismissible = true, string $type = 'success', bool $echo = false)
     {
         $classes = [];
 
@@ -30,23 +30,25 @@ class Log_Manager
             $classes[] = 'notice-' . $type;
         }
 
-        $output = sprintf('<div class="notice %s">', implode(' ', $classes));
+        if (!$echo) {
+            ob_start();
+        }
+        printf('<div class="notice %s">', implode(' ', $classes));
         if (is_array($content)) {
             if (isset($content['title'])) {
-                $output .= sprintf('<p><b>%s</b></p>', esc_html($content['title']));
+                printf('<p><b>%s</b></p>', esc_html($content['title']));
             }
             if (isset($content['content'])) {
-                $output .= sprintf('<p>%s</p>', esc_html($content['content']));
+                printf('<p>%s</p>', esc_html($content['content']));
             }
         } else if (is_string($content)) {
-            $output .= sprintf('<p>%s</p>', esc_html($content));
+            printf('<p>%s</p>', esc_html($content));
         }
-        $output .= '</div>';
+        echo '</div>';
 
-        if ($echo) {
-            echo $output;
+        if (!$echo) {
+            return ob_get_clean();
         }
-
-        return $output;
+        return '';
     }
 }
