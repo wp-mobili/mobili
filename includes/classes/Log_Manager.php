@@ -33,7 +33,7 @@ class Log_Manager
         if (!$echo) {
             ob_start();
         }
-        printf('<div class="notice %s">', implode(' ', $classes));
+        printf('<div class="notice %s">', esc_attr(implode(' ', $classes)));
         if (is_array($content)) {
             if (isset($content['title'])) {
                 printf('<p><b>%s</b></p>', esc_html($content['title']));
