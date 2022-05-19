@@ -104,10 +104,10 @@ class Store
         }
 
         foreach ($request['body']['themes'] as &$theme) {
-            $theme['install_url'] = esc_attr(Download::getInstallThemeAdminUrl($theme['slug']));
+            $theme['install_url'] = Download::getInstallThemeAdminUrl($theme['slug']);
 
             if (current_user_can('switch_themes')) {
-                $theme['activate_url'] = esc_attr(Manager::getActivateThemeAdminUrl($theme['slug']));
+                $theme['activate_url'] = Manager::getActivateThemeAdminUrl($theme['slug']);
             }
 
             if (!is_multisite() && current_user_can('edit_theme_options') && current_user_can('customize')) {
